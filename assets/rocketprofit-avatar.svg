@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" rx="192" fill="#091B35"/>
+  <path d="M143 752H881" stroke="#1BD9C6" stroke-width="22" stroke-linecap="round"/>
+  <path d="M196 707L404 506L540 614L824 288" fill="none" stroke="#F7A72B" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M709 288H824V403" fill="none" stroke="#F7A72B" stroke-width="50" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="196" cy="707" r="28" fill="#1BD9C6"/>
+  <circle cx="404" cy="506" r="28" fill="#1BD9C6"/>
+  <circle cx="540" cy="614" r="28" fill="#1BD9C6"/>
+  <text x="512" y="214" text-anchor="middle" fill="#F4F8FC" font-family="Arial, sans-serif" font-size="128" font-weight="700">RP</text>
+  <text x="512" y="860" text-anchor="middle" fill="#A7B8CB" font-family="Arial, sans-serif" font-size="64" font-weight="700">ROCKETPROFIT</text>
+</svg>
