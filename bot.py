@@ -109,7 +109,10 @@ def build_application() -> Application:
     application = Application.builder().token(settings.bot_token).build()
 
     conv = ConversationHandler(
-        entry_points=[CommandHandler("notify", notify_command)],
+        entry_points=[
+            CommandHandler("notify", notify_command),
+            MessageHandler(filters.Regex(r"^Рассылка$"), notify_command),
+        ],
         states={
             WAITING_MESSAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message_text)],
             WAITING_EMAILS: [MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message_text)],
@@ -132,7 +135,6 @@ def build_application() -> Application:
     application.add_handler(CommandHandler("status", status_command))
     application.add_handler(CommandHandler("history", history_command))
     application.add_handler(CommandHandler("managers", managers_command))
-    application.add_handler(MessageHandler(filters.Regex(r"^Рассылка$"), notify_command))
     application.add_handler(MessageHandler(filters.Regex(r"^Чаты$"), status_command))
     application.add_handler(MessageHandler(filters.Regex(r"^История$"), history_command))
     application.add_handler(MessageHandler(filters.Regex(r"^Помощь$"), help_command))
