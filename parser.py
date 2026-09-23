@@ -35,6 +35,10 @@ def extract_email_from_chat_title(title: str):
     return matches[0] if matches else None
 
 
+def extract_email_from_chat(title: str, description: str = ""):
+    return extract_email_from_chat_title(title) or extract_email_from_chat_title(description)
+
+
 def normalize_email_list(raw_text):
     if not raw_text:
         return []

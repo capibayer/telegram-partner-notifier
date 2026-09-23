@@ -33,7 +33,7 @@ from handlers import (
     start_command,
     status_command,
 )
-from parser import extract_email_from_chat_title
+from parser import extract_email_from_chat
 
 Path(settings.log_path).parent.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
@@ -53,8 +53,9 @@ async def handle_chat_member(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if chat is None:
         return
 
-    title = chat.title or ""
-    email = extract_email_from_chat_title(title)
+    chat_info = await context.bot.get_chat(chat.id)
+    title = chat_info.title or chat.title or ""
+    email = extract_email_from_chat(title, chat_info.description or "")
     if not email:
         return
 
@@ -67,8 +68,9 @@ async def handle_chat_title_change(update: Update, context: ContextTypes.DEFAULT
     if chat is None:
         return
 
-    title = chat.title or ""
-    email = extract_email_from_chat_title(title)
+    chat_info = await context.bot.get_chat(chat.id)
+    title = chat_info.title or chat.title or ""
+    email = extract_email_from_chat(title, chat_info.description or "")
     if not email:
         return
 
@@ -87,12 +89,17 @@ async def register_chat_command(update: Update, context: ContextTypes.DEFAULT_TY
         await message.reply_text("У вас нет доступа к регистрации чатов.")
         return
 
-    email = extract_email_from_chat_title(chat.title or "")
+    chat_info = await context.bot.get_chat(chat.id)
+    title = chat_info.title or chat.title or ""
+    email = extract_email_from_chat(title, chat_info.description or "")
     if not email:
-        await message.reply_text("Не найден email в названии чата. Укажите его, например: Partner | partner@example.com")
+        await message.reply_text(
+            "Не найден email в названии или описании чата. "
+            "Укажите его, например: partner@example.com"
+        )
         return
 
-    db.upsert_partner_chat(email, chat.id, chat.title, 1)
+    db.upsert_partner_chat(email, chat.id, title, 1)
     logger.info("Registered chat %s manually for email %s", chat.id, email)
     await message.reply_text(f"Чат зарегистрирован для {email}.")
 

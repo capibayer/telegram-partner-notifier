@@ -5,7 +5,7 @@ from telegram.ext import ChatMemberHandler, MessageHandler
 
 from bot import build_application
 from database import Database
-from parser import extract_email_from_chat_title, normalize_email_list
+from parser import extract_email_from_chat, extract_email_from_chat_title, normalize_email_list
 
 
 def test_build_application_registers_chat_member_handler():
@@ -33,6 +33,11 @@ def test_normalize_email_list_removes_duplicates_and_invalid():
 
 def test_extract_email_from_chat_title_accepts_list_ru_email():
     assert extract_email_from_chat_title("RP $ 15th@list.ru") == "15th@list.ru"
+
+
+def test_extract_email_from_chat_prefers_title_then_description():
+    assert extract_email_from_chat("Partner | title@example.com", "description@example.com") == "title@example.com"
+    assert extract_email_from_chat("Partner", "Контакт: description@example.com") == "description@example.com"
 
 
 def test_database_detects_conflicting_active_chats(tmp_path: Path):
